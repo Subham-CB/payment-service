@@ -4,6 +4,7 @@ import com.payment.paymentServices.dto.ErrorResponseDto;
 import com.payment.paymentServices.exception.InvalidPaymentMethodException;
 import com.payment.paymentServices.exception.PaymentStatusNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -49,6 +51,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleStatusNotFound(
             PaymentStatusNotFoundException ex, HttpServletRequest request) {
 
+        log.error("Payment status configuration error at {}: {}", request.getRequestURI(), ex.getMessage());
         return build(HttpStatus.INTERNAL_SERVER_ERROR,
                 "An internal configuration error occurred. Please contact support.", request);
     }
@@ -57,6 +60,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleDataAccess(
             DataAccessException ex, HttpServletRequest request) {
 
+        log.error("Database error at {}: {}", request.getRequestURI(), ex.getMessage(), ex);
         return build(HttpStatus.SERVICE_UNAVAILABLE,
                 "A database error occurred. Please try again later.", request);
     }
@@ -80,6 +84,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponseDto> handleGeneric(
             Exception ex, HttpServletRequest request) {
 
+        log.error("Unexpected error at {}: {}", request.getRequestURI(), ex.getMessage(), ex);
         return build(HttpStatus.INTERNAL_SERVER_ERROR,
                 "An unexpected error occurred. Please try again later.", request);
     }
