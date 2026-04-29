@@ -1,5 +1,6 @@
 package com.payment.paymentServices.components;
 
+import com.payment.paymentServices.exception.InvalidPaymentMethodException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +17,7 @@ public class FeeStrategyFactory {
         return feeStrategies.stream()
                 .filter(f-> f.getType().equalsIgnoreCase(type))
                 .findFirst()
-                .orElseThrow(()->new RuntimeException("No Fee Strategy found"));
+                .orElseThrow(() -> new InvalidPaymentMethodException(type));
     }
 
 }
