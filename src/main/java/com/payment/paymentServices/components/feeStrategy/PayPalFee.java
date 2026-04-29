@@ -1,8 +1,9 @@
 package com.payment.paymentServices.components.feeStrategy;
 
 import com.payment.paymentServices.components.FeeStrategy;
+import org.springframework.stereotype.Component;
 
-
+@Component
 public class PayPalFee implements FeeStrategy {
     @Override
     public double calculateFee(double amount) {

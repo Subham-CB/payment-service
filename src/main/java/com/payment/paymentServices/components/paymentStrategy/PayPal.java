@@ -1,7 +1,9 @@
 package com.payment.paymentServices.components.paymentStrategy;
 
 import com.payment.paymentServices.components.PaymentMethod;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PayPal implements PaymentMethod {
     @Override
     public void pay(double amount) {
