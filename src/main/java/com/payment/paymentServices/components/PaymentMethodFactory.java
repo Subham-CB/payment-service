@@ -1,5 +1,6 @@
 package com.payment.paymentServices.components;
 
+import com.payment.paymentServices.exception.InvalidPaymentMethodException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,6 @@ public class PaymentMethodFactory {
         return methodList.stream()
                 .filter(m->m.getType().equalsIgnoreCase(type))
                 .findFirst()
-                .orElseThrow(()->new RuntimeException("Payment method not found"));
+                .orElseThrow(()->new InvalidPaymentMethodException(type));
     }
 }
